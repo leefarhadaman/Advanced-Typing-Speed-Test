@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Typing Speed Test</title>
+    <!-- Add Bootstrap 4 or 5 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        /* Custom styles to fine-tune layout */
+        .hidden { display: none; }
+        .container { max-width: 800px; margin-top: 50px; }
+        .auth-container, .main-container { margin: 0 auto; }
+        .mode-option { cursor: pointer; }
+        .stat-box { text-align: center; }
+        .charts-container { margin-top: 20px; }
+        .modal-content { padding: 30px; }
+        .stats-grid { display: flex; justify-content: space-between; }
+        .stats-card { padding: 20px; border: 1px solid #ddd; border-radius: 10px; width: 30%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="auth-container" class="auth-container">
+            <div class="auth-box">
+                <h2>Login/Register</h2>
+                <input type="text" id="username" class="form-control mb-3" placeholder="Username">
+                <input type="password" id="password" class="form-control mb-3" placeholder="Password">
+                <button id="login-btn" class="btn btn-primary w-100 mb-3">Login</button>
+                <button id="register-btn" class="btn btn-secondary w-100">Register</button>
+            </div>
+        </div>
+
+        <div id="main-container" class="main-container hidden">
+            <h1 class="text-center">Advanced Typing Speed Test</h1>
+            
+            <div class="mode-selector text-center mb-4">
+                <div class="mode-option btn btn-outline-primary mx-2" data-mode="practice">Practice Mode</div>
+                <div class="mode-option btn btn-outline-primary mx-2" data-mode="challenge">Challenge Mode</div>
+                <div class="mode-option btn btn-outline-primary mx-2" data-mode="multiplayer">Multiplayer</div>
+            </div>
+            
+            <div class="settings-panel">
+                <div class="difficulty-selector mb-3">
+                    <label for="difficulty">Category:</label>
+                    <select id="difficulty" class="form-control">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="code">Code Snippets</option>
+                        <option value="quotes">Famous Quotes</option>
+                    </select>
+                </div>
+                
+                <div class="time-selector mb-3">
+                    <label for="time-limit">Time Limit:</label>
+                    <select id="time-limit" class="form-control">
+                        <option value="30">30 seconds</option>
+                        <option value="60" selected>1 minute</option>
+                        <option value="120">2 minutes</option>
+                        <option value="300">5 minutes</option>
+                    </select>
+                </div>
+                
+                <button id="start-btn" class="btn btn-success w-100">Start Test</button>
+            </div>
+
+            <div class="test-container mt-4">
+                <div id="text-display" class="text-display mb-3"></div>
+                <textarea id="input-area" class="form-control" rows="5" disabled placeholder="Test will start when you click the Start button..."></textarea>
+            </div>
+
+            <div class="stats mt-4">
+                <div class="row">
+                    <div class="col-md-3 stat-box">
+                        <div class="stat-label">Time</div>
+                        <div id="time" class="stat-value">60</div>
+                    </div>
+                    <div class="col-md-3 stat-box">
+                        <div class="stat-label">WPM</div>
+                        <div id="wpm" class="stat-value">0</div>
+                    </div>
+                    <div class="col-md-3 stat-box">
+                        <div class="stat-label">Accuracy</div>
+                        <div id="accuracy" class="stat-value">0%</div>
+                    </div>
+                    <div class="col-md-3 stat-box">
+                        <div class="stat-label">Mistakes</div>
+                        <div id="mistakes" class="stat-value">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-container mt-4">
+                <canvas id="speedChart" width="800" height="300"></canvas>
+                <canvas id="progressChart" width="800" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal with Restart functionality -->
+    <div id="result-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Test Results</h2>
+            <div class="result-details"></div>
+            <div class="action-buttons text-center">
+                <button id="retry-btn" class="btn btn-primary">Try Again</button>
+                <button id="share-btn" class="btn btn-info">Share Result</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Restart functionality: Reset test data and elements
+        document.getElementById('retry-btn').addEventListener('click', function() {
+            // Reset text area, timer, and stats
+            document.getElementById('input-area').value = '';
+            document.getElementById('time').textContent = '60';
+            document.getElementById('wpm').textContent = '0';
+            document.getElementById('accuracy').textContent = '0%';
+            document.getElementById('mistakes').textContent = '0';
+
+            // Hide modal and show the test container again
+            document.getElementById('result-modal').classList.add('hidden');
+            document.getElementById('main-container').classList.remove('hidden');
+            
+            // You can add additional functionality to reset charts and other elements as needed
+        });
+    </script>
+</body>
+</html>
